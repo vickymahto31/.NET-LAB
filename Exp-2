@@ -1,0 +1,83 @@
+using System;
+
+// Interface
+interface IPayroll
+{
+    void CalculateSalary();
+}
+
+// Base Class
+class Employee
+{
+    protected int empId;
+    protected string empName;
+    protected double basicSalary;
+
+    public Employee(int id, string name, double salary)
+    {
+        empId = id;
+        empName = name;
+        basicSalary = salary;
+    }
+
+    public virtual void Display()
+    {
+        Console.WriteLine("\nEmployee ID : " + empId);
+        Console.WriteLine("Employee Name : " + empName);
+        Console.WriteLine("Basic Salary : " + basicSalary);
+    }
+}
+
+// Derived Class (Inheritance)
+class PermanentEmployee : Employee, IPayroll
+{
+    public PermanentEmployee(int id, string name, double salary)
+        : base(id, name, salary)
+    {
+    }
+
+    // Interface Method
+    public void CalculateSalary()
+    {
+        double hra = basicSalary * 0.20;
+        double da = basicSalary * 0.10;
+        double totalSalary = basicSalary + hra + da;
+
+        Console.WriteLine("HRA          : " + hra);
+        Console.WriteLine("DA           : " + da);
+        Console.WriteLine("Total Salary : " + totalSalary);
+    }
+
+    // Polymorphism (Method Overriding)
+    public override void Display()
+    {
+        base.Display();
+        Console.WriteLine("Employee Type : Permanent");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.Write("Enter Employee ID: ");
+        int id = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter Employee Name: ");
+        string name = Console.ReadLine();
+
+        Console.Write("Enter Basic Salary: ");
+        double salary = Convert.ToDouble(Console.ReadLine());
+
+        // Polymorphism
+        Employee emp = new PermanentEmployee(id, name, salary);
+        emp.Display();
+
+        // Interface
+        IPayroll payroll = (IPayroll)emp;
+        payroll.CalculateSalary();
+
+        Console.WriteLine("\nPress any key to exit...");
+        Console.ReadKey();
+    }
+}
