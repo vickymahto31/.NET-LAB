@@ -1,0 +1,151 @@
+using System;
+using System.Collections.Generic;
+
+namespace ExpenseTrackingModule
+{
+    // Class to represent a single expense
+    class Expense
+    {
+        // Expense category (e.g., Food, Travel)
+        public string Category { get; set; }
+
+        // Expense amount
+        public decimal Amount { get; set; }
+
+        // Date and time when the expense was added
+        public DateTime Date { get; set; }
+
+        // Constructor to initialize expense details
+        public Expense(string category, decimal amount)
+        {
+            Category = category;
+            Amount = amount;
+            Date = DateTime.Now;
+        }
+    }
+
+    class Program
+    {
+        // List to store all expenses
+        static List<Expense> expenses = new List<Expense>();
+
+        static void Main(string[] args)
+        {
+            // Main menu loop
+            while (true)
+            {
+                Console.WriteLine("\n===== Expense Tracking System =====");
+                Console.WriteLine("1. Add Expense");
+                Console.WriteLine("2. View Expenses");
+                Console.WriteLine("3. Total Expenses");
+                Console.WriteLine("4. Exit");
+                Console.Write("Enter your choice: ");
+
+                // Read user menu choice
+                string choice = Console.ReadLine();
+
+                // Execute action based on user choice
+                switch (choice)
+                {
+                    case "1":
+                        AddExpense();
+                        break;
+
+                    case "2":
+                        ViewExpenses();
+                        break;
+
+                    case "3":
+                        ShowTotalExpenses();
+                        break;
+
+                    case "4":
+                        Console.WriteLine("Thank you!");
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid choice.");
+                        break;
+                }
+            }
+        }
+
+        // Method to add a new expense
+        static void AddExpense()
+        {
+            try
+            {
+                // Get expense category from user
+                Console.Write("Enter Category: ");
+                string category = Console.ReadLine();
+
+                // Validate category
+                if (string.IsNullOrWhiteSpace(category))
+                    throw new Exception("Category cannot be empty.");
+
+                // Get expense amount
+                Console.Write("Enter Amount: ");
+                decimal amount = Convert.ToDecimal(Console.ReadLine());
+
+                // Validate amount
+                if (amount <= 0)
+                    throw new Exception("Amount must be greater than zero.");
+
+                // Add expense to the list
+                expenses.Add(new Expense(category, amount));
+
+                Console.WriteLine("Expense added successfully.");
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid amount. Please enter a numeric value.");
+            }
+            catch (OverflowException)
+            {
+                Console.WriteLine("Amount entered is too large.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+        }
+
+        // Method to display all recorded expenses
+        static void ViewExpenses()
+        {
+            // Check if there are any expenses
+            if (expenses.Count == 0)
+            {
+                Console.WriteLine("No expenses found.");
+                return;
+            }
+
+            // Display table header
+            Console.WriteLine("\nCategory\tAmount\t\tDate");
+            Console.WriteLine("-----------------------------------------------");
+
+            // Loop through each expense
+            foreach (Expense exp in expenses)
+            {
+                Console.WriteLine(
+                    $"{exp.Category}\t\t{exp.Amount:C}\t{exp.Date}"
+                );
+            }
+        }
+
+        // Method to calculate and display total expenses
+        static void ShowTotalExpenses()
+        {
+            decimal total = 0;
+
+            // Sum all expense amounts
+            foreach (Expense exp in expenses)
+            {
+                total += exp.Amount;
+            }
+
+            // Display total amount
+            Console.WriteLine($"Total Expenses: {total:C}");
+        }
+    }
+}
