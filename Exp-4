@@ -1,0 +1,163 @@
+WebForm1.aspx:
+
+
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm1.aspx.cs" Inherits="EventRegistration.WebForm1" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title>Online Event Registration</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f0f2f5;
+        }
+        .container {
+            width: 450px;
+            margin: 40px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .field {
+            margin-bottom: 15px;
+        }
+        .field label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .field input, .field select, .field textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="container">
+            <h2>Event Registration</h2>
+
+            <div class="field">
+                <label>Full Name:</label>
+                <asp:TextBox ID="txtName" runat="server" />
+                <asp:RequiredFieldValidator
+                    ID="rfvName" runat="server"
+                    ControlToValidate="txtName"
+                    ErrorMessage="Name is required."
+                    CssClass="error" Display="Dynamic" />
+            </div>
+
+            <div class="field">
+                <label>Email:</label>
+                <asp:TextBox ID="txtEmail" runat="server" />
+                <asp:RequiredFieldValidator
+                    ID="rfvEmail" runat="server"
+                    ControlToValidate="txtEmail"
+                    ErrorMessage="Email is required."
+                    CssClass="error" Display="Dynamic" />
+                <asp:RegularExpressionValidator
+                    ID="revEmail" runat="server"
+                    ControlToValidate="txtEmail"
+                    ValidationExpression="^[^@\s]+@[^@\s]+\.[^@\s]+$"
+                    ErrorMessage="Enter a valid email."
+                    CssClass="error" Display="Dynamic" />
+            </div>
+
+            <div class="field">
+                <label>Mobile Number:</label>
+                <asp:TextBox ID="txtMobile" runat="server" MaxLength="10" />
+                <asp:RequiredFieldValidator
+                    ID="rfvMobile" runat="server"
+                    ControlToValidate="txtMobile"
+                    ErrorMessage="Mobile number is required."
+                    CssClass="error" Display="Dynamic" />
+                <asp:RegularExpressionValidator
+                    ID="revMobile" runat="server"
+                    ControlToValidate="txtMobile"
+                    ValidationExpression="^[0-9]{10}$"
+                    ErrorMessage="Enter a valid 10-digit number."
+                    CssClass="error" Display="Dynamic" />
+            </div>
+
+            <div class="field">
+                <label>Gender:</label>
+                <asp:RadioButtonList ID="rblGender" runat="server">
+                    <asp:ListItem>Male</asp:ListItem>
+                    <asp:ListItem>Female</asp:ListItem>
+                    <asp:ListItem>Other</asp:ListItem>
+                </asp:RadioButtonList>
+                <asp:RequiredFieldValidator
+                    ID="rfvGender" runat="server"
+                    ControlToValidate="rblGender"
+                    ErrorMessage="Select your gender."
+                    CssClass="error" Display="Dynamic" />
+            </div>
+
+            <div class="field">
+                <label>Select Event:</label>
+                <asp:DropDownList ID="ddlEvent" runat="server">
+                    <asp:ListItem Value="">-- Select Event --</asp:ListItem>
+                    <asp:ListItem>Technical Workshop</asp:ListItem>
+                    <asp:ListItem>Hackathon</asp:ListItem>
+                    <asp:ListItem>Cultural Event</asp:ListItem>
+                    <asp:ListItem>Seminar</asp:ListItem>
+                </asp:DropDownList>
+                <asp:RequiredFieldValidator
+                    ID="rfvEvent" runat="server"
+                    ControlToValidate="ddlEvent"
+                    InitialValue=""
+                    ErrorMessage="Please select an event."
+                    CssClass="error" Display="Dynamic" />
+            </div>
+
+            <div class="field">
+                <label>Event Date:</label>
+                <asp:TextBox ID="txtDate" runat="server" TextMode="Date" />
+                <asp:RequiredFieldValidator
+                    ID="rfvDate" runat="server"
+                    ControlToValidate="txtDate"
+                    ErrorMessage="Select an event date."
+                    CssClass="error" Display="Dynamic" />
+            </div>
+
+            <div class="field">
+                <label>Address:</label>
+                <asp:TextBox ID="txtAddress" runat="server"
+                    TextMode="MultiLine" Rows="3" />
+                <asp:RequiredFieldValidator
+                    ID="rfvAddress" runat="server"
+                    ControlToValidate="txtAddress"
+                    ErrorMessage="Address is required."
+                    CssClass="error" Display="Dynamic" />
+            </div>
+
+            <asp:Button ID="btnRegister" runat="server"
+                Text="Register Now" CssClass="btn"
+                OnClick="btnRegister_Click" />
+
+            <br /><br />
+
+            <asp:Label ID="lblMessage" runat="server" />
+        </div>
+    </form>
+</body>
+</html>
+
+
