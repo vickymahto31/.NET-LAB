@@ -1,0 +1,470 @@
+code - login.aspx:
+
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="AcademicLeaveManagement.Login" %>
+
+
+
+<!DOCTYPE html>
+
+
+
+<html>
+
+<head runat="server">
+
+<title>Student Login</title>
+
+
+
+<style> body {
+font-family: Arial; background-color: #f2f2f2;
+}
+
+
+
+.login-box { width: 350px;
+margin: 100px auto; padding: 30px; background: white;
+border-radius: 10px;
+
+
+
+box-shadow: 0px 0px 10px #aaa;
+
+}
+
+
+
+.login-box h2 {
+
+text-align: center;
+
+}
+
+
+
+.input {
+
+width: 100%; padding: 10px; margin: 10px 0;
+box-sizing: border-box;
+
+}
+
+
+
+.btn {
+
+width: 100%; padding: 10px; background: #007bff; color: white;
+border: none; cursor: pointer;
+}
+
+
+
+.message { color: red;
+text-align: center;
+
+}
+
+
+
+</style>
+
+</head>
+
+
+
+<body>
+
+
+
+<form id="form1" runat="server">
+
+
+
+<div class="login-box">
+
+
+
+<h2>Student Login</h2>
+
+
+
+<asp:Label ID="lblUsername" runat="server" Text="Username"></asp:Label>
+
+
+<asp:TextBox ID="txtUsername" runat="server" CssClass="input"></asp:TextBox>
+
+
+<asp:Label ID="lblPassword" runat="server" Text="Password"></asp:Label>
+
+
+<asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="input"></asp:TextBox>
+
+
+<asp:Button ID="btnLogin" runat="server" Text="Login"
+CssClass="btn"
+
+
+
+OnClick="btnLogin_Click" />
+
+
+
+<br /><br />
+
+
+
+<asp:Label ID="lblMessage" runat="server" CssClass="message"></asp:Label>
+
+
+</div>
+
+
+
+</form>
+
+
+
+</body>
+
+</html>
+
+```
+
+
+
+}
+
+
+
+Response.Redirect("Default.aspx");
+
+}
+
+else
+
+{
+
+
+
+
+
+}
+}}}
+lblMessage.Text ="Invalid username or password.";
+
+
+
+Source : --  Login.aspx.cs :
+Code : -
+
+
+using System; using System.Web;
+
+namespace AcademicLeaveManagement
+{
+public partial class Login : System.Web.UI.Page
+{
+protected void Page_Load(object sender, EventArgs e)
+{
+}
+protected void btnLogin_Click(object sender, EventArgs e)
+{
+string username = txtUsername.Text; string password = txtPassword.Text;
+
+if (username == "student" && password == "1234")
+{
+Session["Username"] = username;
+
+
+HttpCookie cookie = new HttpCookie("StudentCookie"); cookie["Username"] = username;
+cookie.Expires = DateTime.Now.AddDays(7);
+
+
+
+Response.Cookies.Add(cookie);
+
+
+Response.Redirect("LeaveApplication.aspx");
+}
+else
+{
+lblMessage.Text = "Invalid Username or Password!";
+}
+}
+}
+}
+
+
+LeaveApplication.aspx :-
+
+
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="LeaveApplication.aspx.cs" Inherits="AcademicLeaveManagement.LeaveApplication" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+                                             <title>Leave Application</title>
+                                             <style>
+
+
+
+
+
+body {
+font-family: Arial; background-color: #f2f2f2;
+}
+
+
+.container { width: 700px;
+margin: 40px auto; background: white; padding: 30px; border-radius: 10px;
+box-shadow: 0px 0px 10px #aaa;
+}
+
+
+h2 {
+text-align: center;
+}
+
+
+.textbox { width: 100%;
+padding: 10px;
+box-sizing: border-box;
+}
+
+
+.calendar {
+
+
+
+margin-top: 15px;
+}
+
+
+.submit {
+padding: 10px 25px; background-color: green; color: white;
+border: none; cursor: pointer;
+}
+
+
+.logout { float: right;
+}
+
+
+.success { color: green;
+font-weight: bold;
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+
+<form id="form1" runat="server">
+
+
+<div class="container">
+
+
+<asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="logout" OnClick="btnLogout_Click" />
+
+<h2>Leave Application</h2>
+
+
+<asp:Label ID="lblWelcome" runat="server">
+</asp:Label>
+
+
+<br /><br />
+
+
+<asp:Label ID="lblApplication" runat="server"
+Text="Write your leave application:">
+</asp:Label>
+
+
+<br />
+
+
+<asp:TextBox ID="txtApplication"
+
+
+
+runat="server" CssClass="textbox" TextMode="MultiLine" Rows="6">
+</asp:TextBox>
+
+
+<br /><br />
+
+
+<asp:Label ID="lblDate" runat="server" Text="Select Leave Date:">
+</asp:Label>
+
+
+<br />
+
+
+<!-- Rich Control: Calendar -->
+
+
+<asp:Calendar ID="calLeaveDate" runat="server" CssClass="calendar"
+OnSelectionChanged="calLeaveDate_SelectionChanged">
+</asp:Calendar>
+
+
+<br />
+
+
+<asp:Label ID="lblSelectedDate"
+
+
+
+runat="server">
+</asp:Label>
+
+
+<br /><br />
+
+
+<asp:Button ID="btnSubmit" runat="server"
+Text="Submit Leave Application" CssClass="submit" OnClick="btnSubmit_Click" />
+
+<br /><br />
+
+
+<asp:Label ID="lblMessage" runat="server" CssClass="success">
+</asp:Label>
+
+
+</div>
+
+
+</form>
+
+
+
+
+
+
+
+```
+</body>
+</html>
+
+
+
+LeaveApplication.aspx.cs :
+Code :
+
+
+using System; using System.Web;
+
+namespace AcademicLeaveManagement
+{
+public partial class LeaveApplication : System.Web.UI.Page
+{
+protected void Page_Load(object sender, EventArgs e)
+{
+if (Session["Username"] == null)
+{
+Response.Redirect("Login.aspx"); return;
+}
+
+
+if (!IsPostBack)
+{
+lblWelcome.Text =
+"Welcome, " + Session["Username"].ToString();
+
+HttpCookie cookie = Request.Cookies["StudentCookie"];
+
+
+
+if (cookie != null)
+{
+string username = cookie["Username"];
+
+
+lblWelcome.Text = "Welcome, " + username;
+}
+}
+}
+
+
+protected void calLeaveDate_SelectionChanged( object sender, EventArgs e)
+{
+DateTime selectedDate = calLeaveDate.SelectedDate;
+
+lblSelectedDate.Text = "Selected Leave Date: " +
+selectedDate.ToString("dd-MM-yyyy");
+}
+
+
+protected void btnSubmit_Click( object sender, EventArgs e)
+{
+string application =
+
+
+
+txtApplication.Text;
+
+
+DateTime leaveDate = calLeaveDate.SelectedDate;
+
+if (string.IsNullOrWhiteSpace(application))
+{
+lblMessage.Text =
+"Please write your leave application.";
+
+
+return;
+}
+
+
+if (leaveDate == DateTime.MinValue)
+{
+lblMessage.Text =
+"Please select a leave date.";
+
+
+return;
+}
+
+
+lblMessage.Text =
+"Leave Application Submitted Successfully!" + "<br/>Date: " +
+leaveDate.ToString("dd-MM-yyyy") +
+"<br/>Application: " +
+
+
+
+application;
+}
+
+
+protected void btnLogout_Click( object sender, EventArgs e)
+{
+Session.Clear();
+
+
+if (Request.Cookies["StudentCookie"] != null)
+{
+HttpCookie cookie =
+new HttpCookie("StudentCookie");
+
+
+cookie.Expires = DateTime.Now.AddDays(-1);
+
+Response.Cookies.Add(cookie);
+}
+
+
+Response.Redirect("Login.aspx");
+}
+}
+}
